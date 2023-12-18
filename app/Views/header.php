@@ -10,6 +10,11 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="<?= base_url() ?>">Home</a>
         </li>
+        <?php if(session()->user_type == 'admin'): ?>
+            <li class="nav-item">
+             <a class="nav-link active" aria-current="page" href="<?= base_url() ?>">Admin</a>
+            </li>
+        <?php endif ?>
       </ul>
       <ul class="navbar-nav mb-2 mb-lg-0">
         <?php if (session()->loginned == 'loginned'): ?>

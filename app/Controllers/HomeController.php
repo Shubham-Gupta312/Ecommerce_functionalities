@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Libraries\Hash;
+use App\Models\UserDetailsModel;
 
 class HomeController extends BaseController
 {
@@ -79,11 +80,14 @@ class HomeController extends BaseController
                     // echo 'login';
                     if (!is_null(!$user_data)) {
                         $sess_data = [
+                            'user_id' => $user_data['id'],
                             'username' => $user_data['username'],
                             'email' => $user_data['email'],
                             'user_type' => $user_data['user_type'],
-                            "loginned"=>'loginned'
+                            "loginned" => 'loginned'
                         ];
+                        //filter the data according to their roles (ADMIN / USER)
+
                         session()->set($sess_data);
                         if ($user_data['user_type'] == 'user') {
                             //go to user page
@@ -99,11 +103,82 @@ class HomeController extends BaseController
         }
     }
 
-    public function logout(){
-
+    public function logout()
+    {
         session_unset();
         session()->destroy();
         return redirect()->to(base_url());
+    }
+
+    public function profile()
+    {
+        // echo "profile";
+        if ($this->request->getMethod() == 'get') {
+            return view('dashboard/user_profile');
+        } else if ($this->request->getMethod() == 'post') {
+            // Form validation
+            $validation = $this->validate([
+                'name' => 'required|max_length[30]',
+                'country' => 'if_exist|max_length[30]',
+                'state' => 'if_exist|max_length[30]',
+                'district' => 'if_exist|max_length[30]',
+                'pincode' => 'if_exist|integer|max_length[6]',
+                'phone' => 'if_exist|exact_length[10]|integer',
+                'address' => 'if_exist|max_length[200]',
+                'permanent_address' => 'if_exist|max_length[200]'
+            ]);
+
+            if (!$validation) {
+                return view('profile', ['validation' => $this->validator]);
+            } else {
+                // Submit and save data
+                $name = $this->request->getPost('name');
+                $country = $this->request->getPost('country');
+                $state = $this->request->getPost('state');
+                $district = $this->request->getPost('district');
+                $pincode = $this->request->getPost('pincode');
+                $phone = $this->request->getPost('phone');
+                $address = $this->request->getPost('address');
+                $permanent_address = $this->request->getPost('permanent_address');
+
+                $model = new UserDetailsModel();
+                $user_id = session()->user_id;
+                $record = $model->where("user_id", $user_id)->first();
+
+                $data = [
+                    'user_id' => $user_id,
+                    'name' => $name,
+                    'country' => $country,
+                    'state' => $state,
+                    'district' => $district,
+                    'pincode' => $pincode,
+                    'phone' => $phone,
+                    'address' => $address,
+                    'permanent_address' => $permanent_address
+                ];
+
+                if (!is_null($record)) {
+                    // Update data if data is present
+                    $query = $model->update($record['id'], $data);
+                    if (!$query) {
+                        echo "fail to update";
+                    } else {
+                        echo "update success";
+                    }
+                } else {
+                    // Insert data if data is not present 
+                    $query = $model->insert($data);
+                    if (!$query) {
+                        echo "insert fail";
+                    } else {
+                        echo "insert success";
+                    }
+                }
+            }
+        } else {
+            echo 'failed';
+        }
+
     }
 
 }
