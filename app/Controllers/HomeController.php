@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+use App\Models\ProductCategoryModel;
 
 use App\Libraries\Hash;
 use App\Models\UserDetailsModel;
@@ -11,9 +12,18 @@ class HomeController extends BaseController
     {
         helper(['form', 'url']);
     }
-    public function index(): string
+    public function index()
     {
-        return view('welcome_message');
+        if($this->request->getMethod() == 'get'){
+            $model = new ProductCategoryModel();
+            $data = [
+                'records' => $model->paginate(10),
+                'pager' => $model->pager
+            ];
+            // return view ('Product_Category/product', $data);
+            return view('welcome_message', $data);
+        }
+       
     }
     public function register()
     {

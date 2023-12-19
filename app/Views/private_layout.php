@@ -26,6 +26,9 @@
                     <a href="<?= base_url('admin/product_categories') ?>">
                         <button type="button" class="btn btn-dark mt-3">Product Categories</button>
                     </a>
+                    <a href="<?= base_url('admin/products') ?>">
+                        <button type="button" class="btn btn-dark mt-3">Product</button>
+                    </a>
                 </div>
             </div>
             <div class="col-sm-10">

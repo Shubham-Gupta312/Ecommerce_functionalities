@@ -35,4 +35,15 @@ class ProductCategoryController extends BaseController
             }
         }
     }
+
+    public function products(){
+        if($this->request->getMethod() == 'get'){
+            $model = new ProductCategoryModel();
+            $data = [
+                'records' => $model->paginate(10),
+                'pager' => $model->pager,
+            ];
+            return view ('Product_Category/product', $data);
+        }
+    }
 }

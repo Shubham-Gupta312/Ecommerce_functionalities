@@ -27,6 +27,8 @@ $routes->group('admin', ['filter' => 'isAdmin'], static function ($routes) {
     // categories
     $routes->get('product_categories', 'ProductCategoryController::product_categories');
     $routes->post('product_categories', 'ProductCategoryController::product_categories');
+    
+    $routes->get('products', 'ProductCategoryController::products');
 
 });
 
