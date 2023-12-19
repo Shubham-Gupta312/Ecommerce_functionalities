@@ -21,7 +21,12 @@ $routes->post('/profile', 'HomeController::profile');
 
 $routes->get('/user_dashboard', 'DashboardController::user_dashboard', ['filter' => 'isLogin']);
 
+$routes->group('admin', ['filter' => 'isAdmin'], static function ($routes) {
+    $routes->get('admin_dashboard', 'AdminDashboardController::index');
+    $routes->get('users', 'AdminDashboardController::users');
+    // categories
+    $routes->get('product_categories', 'ProductCategoryController::product_categories');
+    $routes->post('product_categories', 'ProductCategoryController::product_categories');
 
-$routes->get('/admin_dashboard', 'AdminDashboardController::index');
-$routes->get('/users', 'AdminDashboardController::users');
+});
 

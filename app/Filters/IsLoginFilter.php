@@ -12,7 +12,7 @@ class IsLoginFilter implements FilterInterface
     {
         // Do something here
         // $session = session();
-        if(session()->loginned == 'loginned'){
+        if(session()->loginned !== 'loginned'){
             return redirect()->to(base_url('login'));
         }
     }

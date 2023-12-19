@@ -12,7 +12,7 @@
         </li>
         <?php if(session()->user_type == 'admin'): ?>
             <li class="nav-item">
-             <a class="nav-link active" aria-current="page" href="<?= base_url() ?>">Admin</a>
+             <a class="nav-link active" aria-current="page" href="<?= base_url('admin/admin_dashboard') ?>">Admin</a>
             </li>
         <?php endif ?>
       </ul>
@@ -20,7 +20,7 @@
         <?php if (session()->loginned == 'loginned'): ?>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page"
-              href="<?= base_url() ?><?= session()->user_type == "admin" ? "admin_dashboard" : 'user_dashboard' ?>">
+              href="<?= base_url('admin/') ?><?= session()->user_type == "admin" ? "admin_dashboard" : 'user_dashboard' ?>">
               <?= ucfirst(session()->username); ?>
             </a>
           </li>

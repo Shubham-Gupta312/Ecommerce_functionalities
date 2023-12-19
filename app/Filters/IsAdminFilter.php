@@ -11,6 +11,9 @@ class IsAdminFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         // Do something here
+        if(session()->user_type !== 'admin'){
+            return redirect()->to(base_url());
+        }
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
